@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#182b2a">
+  <meta name="description" content="EASE 事件相机语义分割 benchmark：模型排行榜、精度与效率对比、类别 IoU。">
+  <title>EventBench · EASE Benchmark</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23182b2a'/%3E%3Cpath d='M9 24l6-12 6 17 5-13 5 7' fill='none' stroke='%23d5f59a' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./css/dashboard.css?v=20260916-3">
+  <script src="./js/dashboard.js?v=20260916-2" defer></script>
+</head>
+<body>
+<svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v17h17M8 15l4-6 4 3 5-8"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M3 17l9 4 9-4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 10a8 8 0 0 0-14-4L3 9m0-6v6h6M4 14a8 8 0 0 0 14 4l3-3m0 6v-6h-6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-8l1-7Z"/></symbol>
+</defs></svg>
+<a class="skip" href="#main">跳转到内容</a>
+<aside class="sidebar">
+  <a class="brand" href="#overview" aria-label="EventBench 首页"><span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m4 19 6-10 6 16 5-13 7 7"/></svg></span><span>EventBench</span></a>
+  <nav aria-label="主导航">
+    <a class="nav-link active" href="#overview"><svg><use href="#i-grid"/></svg>总览与排行<span class="nav-number" id="nav-count">—</span></a>
+    <a class="nav-link" href="#analysis"><svg><use href="#i-chart"/></svg>性能分析</a>
+  </nav>
+</aside>
+<div class="workspace">
+  <header class="topbar"><div class="breadcrumb">Benchmarks <span>/</span> <strong id="crumb-dataset">EASE</strong></div></header>
+  <main id="main">
+    <section id="overview" class="overview">
+      <div class="hero"><div><h1><span id="dataset-title">EASE</span> 语义分割基准<span class="title-dot">.</span></h1></div><div class="hero-actions"><button class="button icon-button" id="refresh" aria-label="刷新指标" title="重新读取当前结果"><svg><use href="#i-refresh"/></svg></button><button class="button primary" id="export"><svg><use href="#i-download"/></svg>导出 CSV</button></div></div>
+      <div class="protocol-strip"><span class="pill" id="dataset-pill">EASE</span><span id="protocol-summary">正在读取评测协议…</span></div>
+      <div id="error" class="error" role="alert" hidden></div>
+      <div class="stats" id="stats" aria-live="polite">
+        <article class="stat"><span class="stat-label">收录方法 <svg><use href="#i-layers"/></svg></span><div class="stat-value" id="stat-count">—</div><div class="stat-foot">同一数据集 · 同一协议</div></article>
+        <article class="stat featured"><span class="stat-label">最佳分割精度 <svg><use href="#i-target"/></svg></span><div class="stat-value"><span id="stat-miou">—</span><small>%</small></div><div class="stat-foot"><span class="metric-chip">mIoU ↑</span><span id="best-miou-name">—</span></div></article>
+        <article class="stat"><span class="stat-label">最快推理速度 <svg><use href="#i-bolt"/></svg></span><div class="stat-value"><span id="stat-fps">—</span><small>FPS</small></div><div class="stat-foot"><span class="mini-dot green"></span><span id="best-fps-name">—</span></div></article>
+        <article class="stat"><span class="stat-label">最佳时序一致性 <svg><use href="#i-chart"/></svg></span><div class="stat-value" id="stat-tc">—</div><div class="stat-foot"><span class="mini-dot purple"></span><span id="best-tc-name">—</span></div></article>
+      </div>
+      <section class="panel" id="leaderboard">
+        <div class="panel-title"><div><h2>方法排行 <span class="count-badge" id="table-count">0</span></h2><p>点击列标题排序，勾选方法进行多维对比。</p></div></div>
+        <div class="toolbar"><label class="search"><svg><use href="#i-search"/></svg><input id="search" type="search" placeholder="搜索方法名称…" aria-label="搜索方法名称"></label><div class="filters"><label>数据集<select id="dataset" aria-label="选择数据集"></select></label><label>协议<select id="protocol-filter" aria-label="选择评测协议"></select></label></div><button class="text-button" id="clear-selection">清空对比</button></div>
+        <div class="table-scroll"><table class="leaderboard"><caption class="sr-only">模型指标排行榜，mIoU 与 Boundary IoU 单位为百分比，mTC 为 0 到 1。</caption><thead><tr><th class="check-col"><span class="sr-only">选择对比</span></th><th class="rank-col">排名</th><th class="method-col">方法</th><th data-key="miou" aria-sort="descending"><button>mIoU <span>↓</span><small>%</small></button></th><th data-key="boundary_miou"><button>B-IoU <span>↕</span><small>%</small></button></th><th data-key="fps"><button>FPS <span>↕</span><small>帧 / 秒</small></button></th><th data-key="latency"><button>Latency <span>↕</span><small>ms</small></button></th><th data-key="temporal_consistency"><button>mTC <span>↕</span><small>0–1</small></button></th><th data-key="params_m"><button>Params <span>↕</span><small>M</small></button></th><th data-key="flops_g"><button>FLOPs <span>↕</span><small>G</small></button></th><th><span class="sr-only">详情</span></th></tr></thead><tbody id="table-body"><tr><td colspan="11" class="empty">正在加载指标…</td></tr></tbody></table></div>
+        <div class="table-footer"><span id="rows-info">正在读取结果</span><a href="#analysis" id="selection-info">已选 0 / 5 个方法 <span>↓</span></a></div>
+      </section>
+    </section>
+    <section id="analysis" class="section-block"><div class="section-heading"><div><h2>指标对比</h2></div><span class="muted">图表随当前筛选同步更新</span></div>
+      <div class="chart-grid"><article class="panel chart-panel"><div class="panel-title"><div><h3>精度 × 推理速度</h3></div><span class="chart-tag">mIoU / FPS</span></div><div id="scatter" class="chart-box"></div><div class="chart-caption">点击数据点查看方法详情；虚线表示 30 FPS。</div></article>
+      <article class="panel chart-panel"><div class="panel-title"><div><h3>六维能力对比</h3><p id="radar-hint">在排行榜中选择最多 5 个方法。</p></div><span class="chart-tag">NORMALIZED</span></div><div id="radar" class="chart-box"></div><div id="radar-legend" class="legend"></div><div class="chart-caption">以当前协议全部方法的最优值归一化；参数量、计算量取倒数。</div></article></div>
+      <div class="panel comparison-panel"><div class="panel-title"><div><h3>所选方法 · 指标对照</h3><p>保留指标原始单位，直观查看方法间的差异。</p></div></div><div class="table-scroll" id="comparison"></div></div>
+    </section>
+  </main>
+</div>
+<dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-header"><button class="icon-button button" id="close-dialog" aria-label="关闭详情"><svg><use href="#i-close"/></svg></button></div><div id="detail-content"></div></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
